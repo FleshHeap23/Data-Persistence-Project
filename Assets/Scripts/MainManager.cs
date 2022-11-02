@@ -12,13 +12,22 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+
+    public Text HighscoreText;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
-    
+    private void Awake()
+    {
+        if(DataManager.Instance.GetHighscore() != null)
+        {
+            HighscoreText.text = DataManager.Instance.GetHighscore();
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +66,8 @@ public class MainManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                DataManager.Instance.UpdateHighscore(m_Points);
+                SceneManager.LoadScene("MainMenu");
             }
         }
     }
@@ -72,5 +82,6 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        
     }
 }
